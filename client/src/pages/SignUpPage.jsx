@@ -4,23 +4,30 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SignupPage() {
   const { signup } = useAuth();
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signup(name, email, password);
-    navigate('/');
+    try {
+      await signup({ name, email, password });
+      navigate('/'); // Redirect to home after signup
+    } catch (err) {
+      setError(err.response?.data?.message || 'Signup failed');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} required />
-      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-      <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-      <button type="submit">Sign Up</button>
+      <h2>Signup</h2>
+      {error && <p style={{color:'red'}}>{error}</p>}
+      <input placeholder="Name" value={name} onChange={e=>setName(e.target.value)} required/>
+      <input type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required/>
+      <input type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} required/>
+      <button type="submit">Signup</button>
     </form>
   );
 }

@@ -1,42 +1,42 @@
 import React, { createContext, useContext, useState } from 'react';
+import { login as loginApi, signup as signupApi } from '../api/auth';
 import axios from 'axios';
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
 
-  const login = async (email, password) => {
-    const res = await axios.post('/api/auth/login', { email, password });
-    setUser(res.data.user);
-    localStorage.setItem('token', res.data.token);
+  const login = async (credentials) => {
+    const data = await loginApi(credentials);
+    setUser(data);
+    localStorage.setItem('user', JSON.stringify(data));
+    return data;
   };
 
-  const signup = async (name, email, password) => {
-    const res = await axios.post('/api/auth/signup', { name, email, password });
-    setUser(res.data.user);
-    localStorage.setItem('token', res.data.token);
+  const signup = async (credentials) => {
+    const data = await signupApi(credentials);
+    setUser(data);
+    localStorage.setItem('user', JSON.stringify(data));
+    return data;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   };
 
+  // Axios instance with auth token
   const authAxios = axios.create();
-  authAxios.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
-  });
+  if (user?.token) {
+    authAxios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
+  }
 
   return (
     <AuthContext.Provider value={{ user, login, signup, logout, authAxios }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);
