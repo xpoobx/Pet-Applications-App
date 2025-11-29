@@ -1,12 +1,10 @@
-import axios from 'axios';
-
-export const getPets = async () => {
-  const res = await axios.get('/api/pets');
+export const getPets = async (authAxios) => {
+  const res = await authAxios.get('/api/pets');
   return res.data;
 };
 
-export const getPet = async (id) => {
-  const res = await axios.get(`/api/pets/${id}`);
+export const getPet = async (id, authAxios) => {
+  const res = await authAxios.get(`/api/pets/${id}`);
   return res.data;
 };
 

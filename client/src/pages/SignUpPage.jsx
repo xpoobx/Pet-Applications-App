@@ -1,3 +1,4 @@
+// Sign up Page - Contains Sign Up Stuff
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +15,7 @@ export default function SignupPage() {
     e.preventDefault();
     try {
       await signup({ name, email, password });
-      navigate('/'); // Redirect to home after signup
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Signup failed');
     }

@@ -9,6 +9,7 @@ import PetFormPage from './pages/PetFormPage';
 import PetEditPage from './pages/PetEditPage';
 import ApplicationsPage from './pages/ApplicationsPage';
 import ApplicationFormPage from './pages/ApplicationFormPage';
+import ProfilePage from './pages/ProfilePage';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/pets/edit/:id" element={<ProtectedRoute><PetEditPage /></ProtectedRoute>} />
         <Route path="/applications" element={<ProtectedRoute><ApplicationsPage /></ProtectedRoute>} />
         <Route path="/applications/new" element={<ProtectedRoute><ApplicationFormPage /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       </Routes>
     </>
   );

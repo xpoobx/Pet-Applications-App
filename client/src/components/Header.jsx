@@ -1,3 +1,4 @@
+// Header Logic
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -13,6 +14,7 @@ export default function Header() {
           <>
             <Link to="/pets/new">Add Pet</Link> |{" "}
             <Link to="/applications">Applications</Link> |{" "}
+            <Link to="/profile">Profile</Link>
             <button onClick={logout}>Logout</button>
           </>
         ) : (

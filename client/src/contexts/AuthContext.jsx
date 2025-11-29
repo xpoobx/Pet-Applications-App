@@ -1,38 +1,51 @@
 import React, { createContext, useContext, useState } from 'react';
-import { login as loginApi, signup as signupApi } from '../api/auth';
+import { login as loginApi } from '../api/auth';
 import axios from 'axios';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
+  });
 
+  // Login function
   const login = async (credentials) => {
     const data = await loginApi(credentials);
-    setUser(data);
-    localStorage.setItem('user', JSON.stringify(data));
-    return data;
+    const storedUser = { ...data.user, token: data.token }; 
+    setUser(storedUser);
+    localStorage.setItem('user', JSON.stringify(storedUser));
+    return storedUser;
   };
 
+  // Signup function
   const signup = async (userData) => {
-  const res = await axios.post(
-    'http://localhost:4000/api/auth/register',
-    userData,
-    { withCredentials: true } 
-  );
-  return res.data;
-};
+    const res = await axios.post('http://localhost:4000/api/auth/register', userData);
+    const storedUser = { ...res.data.user, token: res.data.token };
+    setUser(storedUser);
+    localStorage.setItem('user', JSON.stringify(storedUser));
+    return storedUser;
+  };
 
+  // Logout function
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
   };
 
-  // Axios instance with auth token
-  const authAxios = axios.create();
-  if (user?.token) {
-    authAxios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
-  }
+  // Axios instance for authenticated requests
+  const authAxios = axios.create({
+    baseURL: 'http://localhost:4000',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  authAxios.interceptors.request.use((config) => {
+    if (user?.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+    return config;
+  });
 
   return (
     <AuthContext.Provider value={{ user, login, signup, logout, authAxios }}>

@@ -1,3 +1,4 @@
+// Login Page
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +14,7 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       await login({ email, password });
-      navigate('/'); // Redirect to home after login
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     }
