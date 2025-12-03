@@ -11,8 +11,6 @@ const applicationRoutes = require('./routes/applications.routes');
 
 const app = express();
 
-const cors = require('cors');
-
 const allowedOrigins = [
   'http://localhost:5173',
   'https://pet-applications-app.vercel.app',
@@ -20,19 +18,21 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function(origin, callback) {
+
     if (!origin) return callback(null, true);
 
+    // normalize origin
     const normalizedOrigin = origin.endsWith('/') ? origin.slice(0, -1) : origin;
 
     if (allowedOrigins.includes(normalizedOrigin)) {
-      callback(null, true);
+      callback(null, true); // allow
     } else {
-      callback(new Error(`CORS policy does not allow access from ${origin}`));
+      console.log(`Blocked by CORS: ${origin}`);
+      callback(null, false);
     }
   },
   credentials: true,
 }));
-
 
 
 app.use(bodyParser.json());
