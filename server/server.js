@@ -11,29 +11,20 @@ const applicationRoutes = require('./routes/applications.routes');
 
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://pet-applications-app.vercel.app',
-];
+// Allowed origin from environment variable
+const allowedOrigin = process.env.FRONTEND_URL;
 
 app.use(cors({
   origin: function(origin, callback) {
-
-    if (!origin) return callback(null, true);
-
-    // normalize origin
-    const normalizedOrigin = origin.endsWith('/') ? origin.slice(0, -1) : origin;
-
-    if (allowedOrigins.includes(normalizedOrigin)) {
-      callback(null, true); // allow
+    if (!origin) return callback(null, true); // allow non-browser requests like Postman
+    if (origin === allowedOrigin) {
+      callback(null, true);
     } else {
-      console.log(`Blocked by CORS: ${origin}`);
-      callback(null, false);
+      callback(new Error(`CORS policy does not allow access from ${origin}`));
     }
   },
   credentials: true,
 }));
-
 
 app.use(bodyParser.json());
 
