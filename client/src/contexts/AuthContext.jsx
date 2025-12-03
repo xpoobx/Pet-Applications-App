@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
   // Axios instance for authenticated requests
   const authAxios = axios.create({
-    baseURL: 'https://pet-applications-app.onrender.com/',
+    baseURL: 'https://pet-applications-app.onrender.com',
     headers: { 'Content-Type': 'application/json' },
   });
 
