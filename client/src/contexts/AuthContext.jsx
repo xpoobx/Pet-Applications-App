@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   // Signup function
   const signup = async (userData) => {
-    const res = await axios.post('http://localhost:4000/api/auth/register', userData);
+    const res = await axios.post('/api/auth/register', userData);
     const storedUser = { ...res.data.user, token: res.data.token };
     setUser(storedUser);
     localStorage.setItem('user', JSON.stringify(storedUser));
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
   // Axios instance for authenticated requests
   const authAxios = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: 'https://pet-applications-app.onrender.com/',
     headers: { 'Content-Type': 'application/json' },
   });
 
