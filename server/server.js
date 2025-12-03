@@ -11,22 +11,25 @@ const applicationRoutes = require('./routes/applications.routes');
 
 const app = express();
 
+const cors = require('cors');
+
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://pet-applications-app.vercel.app' 
+  'https://pet-applications-app.vercel.app'
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin) return callback(null, true);
-    if (!allowedOrigins.includes(origin)) {
-      return callback(new Error('CORS policy does not allow this origin.'), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true
-}));
 
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy does not allow access from ${origin}`));
+    }
+  },
+  credentials: true,
+}));
 
 
 app.use(bodyParser.json());
