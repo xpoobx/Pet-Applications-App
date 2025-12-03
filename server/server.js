@@ -12,7 +12,7 @@ const applicationRoutes = require('./routes/applications.routes');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://pet-applications-app.vercel.app/', 
   credentials: true,  
 }));
 
