@@ -15,14 +15,16 @@ const cors = require('cors');
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://pet-applications-app.vercel.app'
+  'https://pet-applications-app.vercel.app',
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    const normalizedOrigin = origin.endsWith('/') ? origin.slice(0, -1) : origin;
+
+    if (allowedOrigins.includes(normalizedOrigin)) {
       callback(null, true);
     } else {
       callback(new Error(`CORS policy does not allow access from ${origin}`));
@@ -30,6 +32,7 @@ app.use(cors({
   },
   credentials: true,
 }));
+
 
 
 app.use(bodyParser.json());
