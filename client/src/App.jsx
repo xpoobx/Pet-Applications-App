@@ -4,7 +4,7 @@ import { useAuth } from './contexts/AuthContext';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage.jsx';
+import SignupPage from './pages/SignupPage';
 import PetFormPage from './pages/PetFormPage';
 import PetEditPage from './pages/PetEditPage';
 import ApplicationsPage from './pages/ApplicationsPage';
