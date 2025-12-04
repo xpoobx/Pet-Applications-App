@@ -8,7 +8,6 @@ export const createApplication = async (data, authAxios) => {
   return res.data;
 };
 
-// ADD THIS FUNCTION
 export const deleteApplication = async (id, authAxios) => {
   const res = await authAxios.delete(`/api/applications/${id}`);
   return res.data;
