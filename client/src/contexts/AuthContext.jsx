@@ -34,12 +34,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-  // Axios instance for authenticated requests
+  // Axios instance for authenticated requests (relative URL!)
   const authAxios = axios.create({
-    baseURL: 'https://pet-applications-app.onrender.com',
+    baseURL: '', // empty → relative to current origin
     headers: { 'Content-Type': 'application/json' },
   });
 
+  // Add token dynamically
   authAxios.interceptors.request.use((config) => {
     if (user?.token) {
       config.headers.Authorization = `Bearer ${user.token}`;
