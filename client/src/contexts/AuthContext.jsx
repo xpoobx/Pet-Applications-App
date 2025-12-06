@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-  // Axios instance for authenticated requests (relative URL!)
+  // Axios instance for authenticated requests
   const authAxios = axios.create({
     baseURL: 'https://pet-applications-app.onrender.com',
     headers: { 'Content-Type': 'application/json' },
