@@ -49,7 +49,7 @@ export default function HomePage() {
         <div className="container hero-inner">
           <div>
             <h1 className="hero-title">
-              Find your <span className="hero-highlight">new best friend</span>
+              Find your <span className="hero-highlight">new best friend!</span>
             </h1>
             <p className="hero-text">
               Browse adoptable pets looking for a safe and loving home. Our
